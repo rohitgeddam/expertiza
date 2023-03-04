@@ -111,7 +111,7 @@
         dest: "{{ app_root }}/code"
         clone: yes
         update: no
-        version: main
+        version: test-branch
 
     - name: Copy config/database.yml.example to config/database.yml
       ansible.builtin.copy:
