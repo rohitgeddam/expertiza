@@ -17,9 +17,19 @@
 name: Ansible system set up
 on:
   workflow_dispatch:
+    inputs:
+      os:
+        description: 'Operating System Flavour'
+        required: true
+        default: 'Ubuntu'
+        type: choice
+        options:
+          - RHEL
+          - Ubuntu
 
 jobs:
-  setup:
+  setup-rhel:
+    if: inputs.os == 'RHEL'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -27,6 +37,19 @@ jobs:
         uses: dawidd6/action-ansible-playbook@v2
         with:
           playbook: setup/setup_playbook.yml
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          inventory: node ansible_host=${{ secrets.SSH_HOST }} ansible_user=${{ secrets.SSH_USER }}
+          options: --verbose
+
+  setup-ubuntu:
+    if: inputs.os == 'Ubuntu'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run playbook
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          playbook: setup/setup_playbook_ubuntu.yml
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           inventory: node ansible_host=${{ secrets.SSH_HOST }} ansible_user=${{ secrets.SSH_USER }}
           options: --verbose
