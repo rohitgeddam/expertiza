@@ -107,11 +107,11 @@
     # Expertiza clone repo, install gems
     - name: Clone Expertiza repository
       ansible.builtin.git:
-        repo: https://github.com/mundra-ankur/expertiza.git
+        repo: https://github.com/rohitgeddam/expertiza.git
         dest: "{{ app_root }}/code"
         clone: yes
         update: no
-        version: main
+        version: test-branch
 
     - name: Copy config/database.yml.example to config/database.yml
       ansible.builtin.copy:
